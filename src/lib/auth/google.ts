@@ -7,11 +7,8 @@ import {
 import { db } from "../db";
 import { sessions } from "../db/schema";
 
-const googleClientId =
-  "558616366545-qf0s95ioagurbcc3m54avii0ue5i45fr.apps.googleusercontent.com";
-const googleClientSecret = "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";
-
-
+const googleClientId = import.meta.env["GOOGLE_CLIENT_ID"];
+const googleClientSecret = import.meta.env["GOOGLE_CLIENT_SECRET"];
 
 function google(url?: URL) {
   url ??= new URL("http://localhost:4321");
@@ -28,7 +25,6 @@ function google(url?: URL) {
 google.default = google();
 
 export async function createAuthorizationURL(url?: URL) {
-
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
   const scopes = ["email", "profile"];

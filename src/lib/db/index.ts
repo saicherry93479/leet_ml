@@ -1,11 +1,11 @@
 import * as schema from "./schema";
 import { drizzle } from "drizzle-orm/libsql";
 
-const url = "libsql://jobportal-cherrybrez.turso.io";
-const authToken =
-  "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3MjkwNzM2ODYsImlkIjoiMTFjZjQ0Y2UtODFmMi00YTc4LWE4NDYtNDI1YjY3MzMzZjA0In0.NM9t5aN2_rlLyaovrd8p_azjPl2_IKM0jCAvPeW_c97dCbHndO5zGmPPBCOOIvgSkTYJfbfE6y6RrglPhlM8Dw";
-const embeddedReplicaUrl = "file:replica.db";
+const url = import.meta.env['TURSO_URL'];
+const authToken = import.meta.env['TURSO_AUTH_TOKEN'];
+const embeddedReplicaUrl = import.meta.env['TURSO_EMBEDDED_REPLICA_URL'];
 
+console.log('url ',url)
 const clientImportUri = import.meta.env.DEV
   ? "@libsql/client"
   : `data:application/javascript,export * from "npm:@libsql/client/node"`;
