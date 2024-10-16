@@ -1,56 +1,43 @@
-# Astro Starter Kit: Basics
+### Prerequisites
 
-```sh
-npm create astro@latest -- --template basics
-```
+Before running the project, make sure you have installed [Bun](https://bun.sh/). Bun is a modern JavaScript runtime like Node.js but much faster and lightweight.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+### Installing Bun
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+To install Bun, use the following command:
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+```bash
+curl https://bun.sh/install | bash
 
-## 🚀 Project Structure
+After installing, ensure Bun is working by running:
 
-Inside of your Astro project, you'll see the following folders and files:
+bun --version
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+At the root level of your project, create a .env file and add the following:
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+GOOGLE_CLIENT_ID=558616366545-qf0s95ioagurbcc3m54avii0ue5i45fr.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
 
-Any static assets, like images, can be placed in the `public/` directory.
+TURSO_AUTH_TOKEN=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9eyJhIjoicnciLCJpYXQiOjE3MjkwNzM2ODYsImlkIjoiMTFjZQ0Y2UtODFmMi00YTc4LWE4NDYtNDI1YjY3MzMzZjA0In0NM9t5aN2_rlLyaovrd8p_azjPl2_IKM0jCAvPeW_c97dCbHndO5zGmPPBCOOIvgSkTYJfbfE6y6RrglPhlM8Dw
+TURSO_URL=libsql://jobportal-cherrybrez.turso.io
+TURSO_EMBEDDED_REPLICA_URL=file:replica.db
 
-## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+Run the following command to install all required dependencies:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+bun install
 
-## 👀 Want to learn more?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-# project_leet
-# project_leet
+Start the development server with:
+
+bun run dev
+
+To view the database using the Turso/DB studio, run:
+
+bun run studio ( it will give a link, please click to access db ui)
+
+
+
+Making a User Admin
+To promote a user to admin, you need to update the role column in the users table for the respective user to admin.

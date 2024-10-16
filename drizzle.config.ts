@@ -1,7 +1,7 @@
 import { defineConfig } from "drizzle-kit";
 
-const TURSO_AUTH_TOKEN = import.meta.env.TURSO_AUTH_TOKEN;
-const TURSO_URL = import.meta.env.TURSO_URL;
+const TURSO_AUTH_TOKEN = process.env.TURSO_AUTH_TOKEN
+const TURSO_URL = process.env.TURSO_URL
 
 if (!TURSO_AUTH_TOKEN || !TURSO_URL) {
   throw new Error("Please provide TURSO_AUTH_TOKEN and TURSO_URL");
