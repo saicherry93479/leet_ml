@@ -61,7 +61,7 @@
                 </a>
               </li>
             {/if}
-            {#if user.premiumUser}
+            {#if user?.premiumUser}
               <p class="flex px-4 py-2 bg-white-500 text-center font-bold text-[16px] items-center justify-center ml-4 text-purple-500 rounded-[10px]">Premium User</p>
             {:else}
               <a

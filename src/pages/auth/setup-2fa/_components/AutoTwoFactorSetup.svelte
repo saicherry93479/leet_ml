@@ -39,7 +39,7 @@
         });
         
         if (response.ok) {
-          window.location.href = '/dashboard';
+          window.location.href = '/';
         } else {
           const data = await response.json();
           error = data.error || 'Verification failed';
@@ -58,7 +58,7 @@
         });
         
         if (response.ok) {
-          window.location.href = '/dashboard';
+          window.location.href = '/';
         }
       } catch (err) {
         error = 'Failed to skip setup';

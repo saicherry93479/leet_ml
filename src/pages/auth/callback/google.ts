@@ -121,7 +121,7 @@ export const GET: APIRoute = async ({ url, cookies, request, redirect }) => {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     });
 
-    return redirect("/dashboard", 302);
+    return redirect("/", 302);
   } catch (error) {
     console.error(error);
     if (error instanceof OAuth2RequestError) {
