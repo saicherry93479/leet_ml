@@ -1,3 +1,4 @@
+// @ts-ignore
 import { defineMiddleware, sequence } from "astro:middleware";
 import { getSession } from "./lib/auth";
 
@@ -7,7 +8,7 @@ export const auth = defineMiddleware(
     let user = null;
     if (sessionId) {
       const session = await getSession(sessionId);
-
+       console.log('session is ',session)
       if (session) {
         user = session.user ?? undefined;
         locals.session = session;
@@ -25,10 +26,11 @@ export const auth = defineMiddleware(
     if (url.pathname.startsWith("/_server-islands")) return next();
 
     if (user) {
+      
       if (url.pathname.startsWith("/auth")) {
         return redirect("/", 302);
       }
-      if (url.pathname.startsWith("/admin") && user?.role !== "admin") {
+      if (url.pathname.startsWith("/admin") && user?.admin !== "Y") {
         return new Response("Not Found", { status: 404 });
       }
     } else {

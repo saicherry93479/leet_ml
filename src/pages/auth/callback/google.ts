@@ -10,13 +10,10 @@ import { eq } from "drizzle-orm";
 export const GET: APIRoute = async ({ url, cookies, request, redirect }) => {
   const provider = google;
 
-
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
   const { state: authState, codeVerifier } =
     cookies.get("authState")?.json() || {};
-
- 
 
   cookies.delete("authState");
 
@@ -69,6 +66,48 @@ export const GET: APIRoute = async ({ url, cookies, request, redirect }) => {
       return new Response("Failed to create user", { status: 500 });
     }
 
+    if (user.twoFactorEnabled) {
+      const tempId = crypto.randomUUID();
+      cookies.set(
+        "temp_auth",
+        JSON.stringify({
+          id: tempId,
+          userId: user.id,
+          tokens,
+          userAgent: request.headers.get("user-agent"),
+        }),
+        {
+          secure: import.meta.env.PROD,
+          httpOnly: true,
+          path: "/",
+          maxAge: 300, // 5 minutes
+        }
+      );
+
+      return redirect("/auth/verify-2fa", 302);
+    }
+
+    if (user.firstLogin) {
+      const tempId = crypto.randomUUID();
+      cookies.set(
+        "setup_auth",
+        JSON.stringify({
+          id: tempId,
+          userId: user.id,
+          tokens,
+          userAgent: request.headers.get("user-agent"),
+        }),
+        {
+          secure: import.meta.env.PROD,
+          httpOnly: true,
+          path: "/",
+          maxAge: 900, // 15 minutes
+        }
+      );
+
+      return redirect("/auth/setup-2fa", 302);
+    }
+
     const userAgent = request.headers.get("user-agent");
     const sessionId = await createSession(user.id, tokens, userAgent || "");
     if (!sessionId) {
@@ -79,8 +118,10 @@ export const GET: APIRoute = async ({ url, cookies, request, redirect }) => {
       secure: import.meta.env.PROD,
       httpOnly: true,
       path: "/",
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     });
+
+    return redirect("/dashboard", 302);
   } catch (error) {
     console.error(error);
     if (error instanceof OAuth2RequestError) {

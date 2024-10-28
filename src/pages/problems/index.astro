@@ -1,11 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 
-import AdminPage from './_components/AdminPage.svelte'
+import ProblemList from "./_components/Problems.svelte";
 
 
 ---
 
 <Layout title="Welcome to Astro.">
-	<AdminPage client:idle></AdminPage>
+	<ProblemList client:idle></ProblemList>
 </Layout>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { LogOut } from "lucide-svelte";
 
   let { user } = $props();
 </script>
@@ -15,55 +16,73 @@
 
       <div class="flex items-center justify-between w-full px-4">
         <div>
-          <nav
-            class="absolute right-4 top-full w-full max-w-[250px] rounded-lg bg-white py-5 px-6 shadow transition-all lg:static lg:block lg:w-full lg:max-w-full lg:bg-transparent lg:shadow-none dark:bg-dark-2 lg:dark:bg-transparent"
-          >
-            <ul class="block lg:flex">
-              {#if user?.role === "admin"}
-                <li>
-                  <a
-                    href="/admin"
-                    class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
-                  >
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/newproblem"
-                    class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
-                  >
-                    New Problem
-                  </a>
-                </li>
-              {:else}
-                <li>
-                  <a
-                    href="/"
-                    class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
-                  >
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/problems"
-                    class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
-                  >
-                    Problems
-                  </a>
-                </li>
-              {/if}
-              {#if user}{/if}
-            </ul>
-          </nav>
+          <ul class="block w-full lg:flex text-[12px] mr-12">
+            {#if user?.admin === "Y"}
+              <li>
+                <a
+                  href="/"
+                  class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
+                >
+                  Home
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="/problems"
+                  class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
+                >
+                  Problems
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/newproblem"
+                  class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
+                >
+                  New Problem
+                </a>
+              </li>
+            {:else}
+              <li>
+                <a
+                  href="/"
+                  class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/problems"
+                  class="flex py-2 text-base font-medium text-dark dark:text-white hover:text-primary lg:ml-12 lg:inline-flex"
+                >
+                  Problems
+                </a>
+              </li>
+            {/if}
+            {#if user.premiumUser}
+              <p class="flex px-4 py-2 bg-white-500 text-center font-bold text-[16px] items-center justify-center ml-4 text-purple-500 rounded-[10px]">Premium User</p>
+            {:else}
+              <a
+                href="/payment"
+                class="flex px-4 py-2 bg-purple-500 text-center items-center justify-center ml-4 text-white rounded-[10px]"
+                >Buy Premium</a
+              >
+            {/if}
+          </ul>
         </div>
         <div class="justify-end sm:flex">
           {#if user}
-            <img
-              class="h-10 w-10 rounded-[8px]"
-              src={`https://ui-avatars.com/api/?name=${user.name}&background=9333ea&color=fff`}
-            />
+            <div class="flex gap-4 items-center">
+              <img
+                class="h-10 w-10 rounded-[8px]"
+                src={`https://ui-avatars.com/api/?name=${user.name}&background=9333ea&color=fff`}
+              />
+              <a href="/logout">
+                <LogOut />
+              </a>
+            </div>
           {:else}
             <a
               href="/auth"

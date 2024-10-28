@@ -28,7 +28,7 @@ console.log('user is ',user)
 <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Rubik+Mono+One&family=Varela+Round&family=Yatra+One&display=swap" rel="stylesheet">
   </head>
   <body class="flex min-h-screen max-w-screen flex-col overflow-x-hidden">
-    {pathname!=='/auth' && <Header {user}></Header>}
+    {pathname!=='/auth' && <Header {user} client:load></Header>}
     <div class="relative z-10 flex flex-1 flex-col">
       <slot />
     </div>

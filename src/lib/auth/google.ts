@@ -1,3 +1,4 @@
+// @ts-ignore
 import {
   generateCodeVerifier,
   generateState,
@@ -92,6 +93,7 @@ export async function fetchUser(tokens: any) {
   };
 }
 
+
 export async function createSession(
   userId: string,
   tokens: any,
@@ -102,9 +104,19 @@ export async function createSession(
   }
   const deviceLabel = "web";
   const accessToken = tokens.accessToken;
-  const accessTokenExpiresAt = tokens.accessTokenExpiresAt;
-  const refreshToken = tokens.refreshToken ?? null;
-  const refreshTokenExpiresAt = tokens.refreshTokenExpiresAt ?? null;
+  
+  // Ensure all timestamp values are Date objects
+  const accessTokenExpiresAt = tokens.accessTokenExpiresAt instanceof Date 
+    ? tokens.accessTokenExpiresAt 
+    : new Date(tokens.accessTokenExpiresAt);
+    
+  const refreshToken = tokens.refreshToken ?? crypto.randomUUID();
+  
+  const refreshTokenExpiresAt = tokens.refreshTokenExpiresAt
+    ? (tokens.refreshTokenExpiresAt instanceof Date 
+      ? tokens.refreshTokenExpiresAt 
+      : new Date(tokens.refreshTokenExpiresAt))
+    : new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
 
   try {
     const [session] = await db
@@ -119,11 +131,12 @@ export async function createSession(
         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days
       })
       .returning({ id: sessions.id });
+      
     if (!session) return null;
 
     return session.id;
   } catch (error) {
-    console.error(error);
+    console.error('Error creating session:', error);
     return null;
   }
 }

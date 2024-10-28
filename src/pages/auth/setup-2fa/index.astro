@@ -1,0 +1,13 @@
+---
+import Layout from "../../../layouts/Layout.astro"
+import AutoTwoFactorSetup from './_components/AutoTwoFactorSetup.svelte';
+
+const setupAuth = Astro.cookies.get("setup_auth")?.json();
+if (!setupAuth) {
+  return Astro.redirect("/auth/login");
+}
+---
+
+<Layout title="Set Up Two-Factor Authentication">
+  <AutoTwoFactorSetup client:load />
+</Layout>

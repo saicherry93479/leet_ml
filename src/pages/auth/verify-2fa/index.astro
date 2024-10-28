@@ -1,0 +1,15 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import TwoFactorVerify from './_components/TwoFactorVerify.svelte';
+
+const tempAuth = Astro.cookies.get("temp_auth")?.json();
+if (!tempAuth) {
+  return Astro.redirect("/auth/login");
+}
+---
+
+<Layout title="Verify 2FA">
+  <div class="container mx-auto px-4 py-8">
+    <TwoFactorVerify client:load />
+  </div>
+</Layout>
