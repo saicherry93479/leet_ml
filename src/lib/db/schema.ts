@@ -56,7 +56,6 @@ export const examples = sqliteTable("examples", {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   problemId: text("problem_id")
-    .notNull()
     .references(() => problems.id),
   inputText: text("input_text").notNull(),
   outputText: text("output_text").notNull(),
@@ -86,7 +85,7 @@ export const problemToTags = sqliteTable("problem_to_tags", {
 });
 
 // Relations configuration
-export const problemRelations = relations(problems, ({ many }) => ({
+export const problemRelations = relations(problems, ({ many,one }) => ({
   examples: many(examples),
   testCases: many(testCases),
   problemToTags: many(problemToTags),
