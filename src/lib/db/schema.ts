@@ -50,17 +50,25 @@ export const problems = sqliteTable("problems", {
   ),
 });
 
-// Examples table for multiple examples per problem
 export const examples = sqliteTable("examples", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   problemId: text("problem_id")
+    .notNull()
     .references(() => problems.id),
   inputText: text("input_text").notNull(),
   outputText: text("output_text").notNull(),
   explanation: text("explanation"),
 });
+
+
+export const examplesRelations = relations(examples, ({ one }) => ({
+  problem: one(problems, {
+    fields: [examples.problemId],
+    references: [problems.id],
+  }),
+}));
 
 // Test cases table
 export const testCases = sqliteTable("test_cases", {
@@ -83,9 +91,15 @@ export const problemToTags = sqliteTable("problem_to_tags", {
     .notNull()
     .references(() => problemTags.id),
 });
+export const testCasesRelations = relations(testCases, ({ one }) => ({
+  problem: one(problems, {
+    fields: [testCases.problemId],
+    references: [problems.id],
+  }),
+}));
 
-// Relations configuration
-export const problemRelations = relations(problems, ({ many,one }) => ({
+// Modified problem relations to make sure all relationships are properly defined
+export const problemRelations = relations(problems, ({ many }) => ({
   examples: many(examples),
   testCases: many(testCases),
   problemToTags: many(problemToTags),
