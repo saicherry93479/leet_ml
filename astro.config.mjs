@@ -6,11 +6,13 @@ import react from "@astrojs/react";
 import svelte from "@astrojs/svelte";
 
 import tailwind from "@astrojs/tailwind";
-import vercelServerless from '@astrojs/vercel/serverless';
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: vercelServerless(),
+  adapter: deno({
+    port: 4321,
+    hostname: "0.0.0.0",
+  }),
   output: "server",
   experimental: {
     serverIslands: true,
