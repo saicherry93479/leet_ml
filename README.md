@@ -14,6 +14,7 @@ After installing, ensure Bun is working by running:
 bun --version
 
 
+
 At the root level of your project, create a .env file and add the following:
 
 GOOGLE_CLIENT_ID=558616366545-qf0s95ioagurbcc3m54avii0ue5i45fr.apps.googleusercontent.com
