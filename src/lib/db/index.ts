@@ -1,9 +1,10 @@
+import { env } from "../utils";
 import * as schema from "./schema";
 import { drizzle } from "drizzle-orm/libsql";
 
-const url = import.meta.env['TURSO_URL'];
-const authToken = import.meta.env['TURSO_AUTH_TOKEN'];
-const embeddedReplicaUrl = import.meta.env['TURSO_EMBEDDED_REPLICA_URL'];
+const url = env("TURSO_URL");
+const authToken = env("TURSO_AUTH_TOKEN");
+const embeddedReplicaUrl = env("TURSO_EMBEDDED_REPLICA_URL");
 
 console.log('url ',url)
 
