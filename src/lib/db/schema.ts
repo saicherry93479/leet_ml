@@ -9,11 +9,18 @@ export const users = sqliteTable("users", {
   email: text("email").notNull().unique().notNull(),
   avatar: text("avatar"),
   admin: text("admin").default("N"),
-  premiumUser: integer("premium",{"mode":"boolean"}).default(false),
+  premiumUser: integer("premium", { mode: "boolean" }).default(false),
   twoFactorEnabled: integer("two_factor_enabled", { mode: "boolean" }).default(
     false
   ),
   twoFactorSecret: text("two_factor_secret"),
+  emailTwoFactorEnabled: integer("email_two_factor_enabled", {
+    mode: "boolean",
+  }).default(false),
+  emailTwoFactorCode: text("email_two_factor_code"),
+  emailTwoFactorCodeExpiresAt: integer("email_two_factor_code_expires_at", {
+    mode: "timestamp",
+  }),
   firstLogin: integer("first_login", { mode: "boolean" }).default(true),
 });
 
@@ -62,6 +69,20 @@ export const examples = sqliteTable("examples", {
   explanation: text("explanation"),
 });
 
+export const problemSubmissions = sqliteTable("problemSubmission", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  problemId: text("problem_id")
+    .notNull()
+    .references(() => problems.id),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  submitedAt: integer("submoitted_at", { mode: "timestamp" }).$defaultFn(
+    () => new Date()
+  ),
+});
 
 export const examplesRelations = relations(examples, ({ one }) => ({
   problem: one(problems, {

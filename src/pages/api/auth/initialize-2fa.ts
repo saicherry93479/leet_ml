@@ -2,9 +2,11 @@ import { TwoFactorAuth } from "@/lib/auth/twoFactor";
 import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ cookies }) => {
+  console.log('here came ')
     const setupAuth = cookies.get("setup_auth")?.json();
-    
+    console.log('here came ',setupAuth)
     if (!setupAuth) {
+      
       return new Response(JSON.stringify({ error: "Invalid session" }), { 
         status: 401 
       });

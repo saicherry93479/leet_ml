@@ -1,10 +1,20 @@
 ---
-import Layout from "../../../layouts/Layout.astro"
-import AutoTwoFactorSetup from './_components/AutoTwoFactorSetup.svelte';
+import { db } from "@/lib/db";
+import Layout from "../../../layouts/Layout.astro";
+import AutoTwoFactorSetup from "./_components/AutoTwoFactorSetup.svelte";
+import { users } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
+const { userId } = Astro.locals;
+console.log("userId");
+if (!userId) {
+  return Astro.redirect("/auth");
+}
+const userAll = await db.select().from(users).where(eq(users.id, userId));
+const user = userAll[0];
 const setupAuth = Astro.cookies.get("setup_auth")?.json();
 if (!setupAuth) {
-  return Astro.redirect("/auth/login");
+  return Astro.redirect("/auth/verify-2fa");
 }
 ---
 

@@ -63,4 +63,10 @@
         {loading ? 'Verifying...' : 'Verify'}
       </button>
     </form>
+    <a
+    href="/email2fa"
+    class="text-lg text-center !mt-8   text-gray-500 hover:text-gray-700"
+  >
+    Do 2FA with mail verification
+  </a>
   </div>

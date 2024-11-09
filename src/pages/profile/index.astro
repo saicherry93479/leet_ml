@@ -1,0 +1,29 @@
+---
+import { db } from "@/lib/db";
+import Layout from "../../layouts/Layout.astro";
+import ProfileScreen from "./_components/ProfileScreen.svelte";
+import { problems, problemSubmissions } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
+
+const { user } = Astro.locals;
+
+console.log("user is ", user);
+
+const problemSubmissionsAll = await db
+  .select({
+    title: problems.title,
+    difficulty: problems.difficulty,
+    category: problems.category,
+    isPremium: problems.isPremium,
+    submitedAt: problemSubmissions.submitedAt,
+  })
+  .from(problemSubmissions)
+  .leftJoin(problems, eq(problems.id, problemSubmissions.problemId))
+  .where(eq(problemSubmissions.userId, user.id));
+
+console.log("problemSubmissionsAll ", problemSubmissionsAll);
+---
+
+<Layout title="Welcome to Astro.">
+  <ProfileScreen client:only {user} submissions={problemSubmissionsAll} />
+</Layout>

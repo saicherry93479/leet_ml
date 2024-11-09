@@ -1,0 +1,16 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Page from "./Page.svelte";
+
+const { user,userId } = Astro.locals;
+
+console.log('userId ',userId)
+// console.log("user is ", user,'userId ',userId);
+if (!userId) {
+  return Astro.redirect("/", 302);
+}
+---
+
+<Layout title="mail verfier">
+  <Page {userId} client:load />
+</Layout>

@@ -1,0 +1,21 @@
+---
+import { db } from "@/lib/db";
+import Layout from "../../../layouts/Layout.astro";
+
+import ProblemScreen from "./_components/ProblemScreen.tsx";
+
+
+const {problem}=Astro.params
+
+const allProblems = await db.query.problems.findMany({
+	with :{
+		examples:true,
+		testCases:true,
+		problemToTags : true
+	}
+})
+---
+
+<Layout title="Welcome to Astro.">
+	<ProblemScreen allProblems={allProblems} problemId={problem} client:only="react"></ProblemScreen>
+</Layout>

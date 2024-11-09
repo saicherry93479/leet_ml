@@ -85,6 +85,44 @@ export const GET: APIRoute = async ({ url, cookies, request, redirect }) => {
       );
 
       return redirect("/auth/verify-2fa", 302);
+    } else {
+      const tempId = crypto.randomUUID();
+      cookies.set(
+        "setup_auth",
+        JSON.stringify({
+          id: tempId,
+          userId: user.id,
+          tokens,
+          userAgent: request.headers.get("user-agent"),
+        }),
+        {
+          secure: import.meta.env.PROD,
+          httpOnly: true,
+          path: "/",
+          maxAge: 900, // 15 minutes
+        }
+      );
+    }
+
+    if (user.emailTwoFactorEnabled) {
+      const tempId = crypto.randomUUID();
+      cookies.set(
+        "temp_auth",
+        JSON.stringify({
+          id: tempId,
+          userId: user.id,
+          tokens,
+          userAgent: request.headers.get("user-agent"),
+        }),
+        {
+          secure: import.meta.env.PROD,
+          httpOnly: true,
+          path: "/",
+          maxAge: 300, // 5 minutes
+        }
+      );
+
+      return redirect("/email2fa", 302);
     }
 
     if (user.firstLogin) {

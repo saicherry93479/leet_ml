@@ -24,7 +24,7 @@
     },
   ];
 
-  async function getData () {
+  async function getData() {
     console.log("called ");
     try {
       const problemSet = await axios.get("");
@@ -32,14 +32,14 @@
 
       const apiProblems = await axios.get("/api/problems");
       console.log("userData is ", apiProblems);
-      problems =apiProblems.data || []
+      problems = apiProblems.data || [];
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const handleProblemClick = (problemId: string) => {
-    window.location.href = `/accounts/problems/${problemId}`;
+    window.location.href = `/problems/${problemId}`;
   };
 
   onMount(() => {
@@ -80,7 +80,7 @@
             <th scope="col" class="px-6 py-3">Problem Title</th>
             <th scope="col" class="px-6 py-3">Difficulty</th>
             <th scope="col" class="px-6 py-3">Category</th>
-            <th scope="col" class="px-6 py-3">Solution</th>
+
             <th scope="col" class="px-6 py-3">Video Solution</th>
           </tr>
         </thead>
@@ -119,29 +119,7 @@
               <td class="px-6 py-4">
                 {problem.category}
               </td>
-              <td class="px-6 py-4">
-                <div class="text-blue-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <path
-                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                    />
-                    <polyline points="14 2 14 8 20 8" />
-                    <line x1="16" y1="13" x2="8" y2="13" />
-                    <line x1="16" y1="17" x2="8" y2="17" />
-                    <polyline points="10 9 9 9 8 9" />
-                  </svg>
-                </div>
-              </td>
+
               <td class="px-6 py-4 flex justify-between">
                 <a href="https://www.youtube.com/{problem.videoId}">
                   <Youtube size={35} class="text-red-500" />

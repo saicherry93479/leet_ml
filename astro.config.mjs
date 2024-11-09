@@ -1,10 +1,11 @@
+// @ts-check
 import { defineConfig } from "astro/config";
+import deno from "@astrojs/deno";
+import react from "@astrojs/react";
+
+import svelte from "@astrojs/svelte";
 
 import tailwind from "@astrojs/tailwind";
-import svelte from "@astrojs/svelte";
-import deno from "@astrojs/deno";
-
-
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,13 +14,15 @@ export default defineConfig({
     hostname: "0.0.0.0",
   }),
   output: "server",
-  devToolbar: {
-    enabled: false,
-  },
   experimental: {
     serverIslands: true,
   },
-  integrations: [svelte(), tailwind({
-    applyBaseStyles: false,
-  })],
+
+  integrations: [
+    react(),
+    svelte(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+  ],
 });

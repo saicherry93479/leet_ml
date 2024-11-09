@@ -1,17 +1,19 @@
 ---
 import Header from "../components/Header.svelte";
-import '@/styles/globals.css'
+import "@/styles/globals.css";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
 
-const {pathname} = Astro.url
+const { pathname } = Astro.url;
 
-const {user} =Astro.locals
+const { user } = Astro.locals;
 
-console.log('user is ',user)
+console.log("user is ", user);
 ---
 
 <!doctype html>
@@ -23,12 +25,16 @@ console.log('user is ',user)
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Rubik+Mono+One&family=Varela+Round&family=Yatra+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Rubik+Mono+One&family=Varela+Round&family=Yatra+One&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body class="flex min-h-screen max-w-screen flex-col overflow-x-hidden">
-    {pathname!=='/auth' && <Header {user} client:load></Header>}
+    <ToastContainer client:load />
+    {pathname !== "/auth" && <Header {user} client:load />}
     <div class="relative z-10 flex flex-1 flex-col">
       <slot />
     </div>
@@ -52,7 +58,7 @@ console.log('user is ',user)
     font-family: "Varela Round", sans-serif;
   }
 
-  .logo{
+  .logo {
     /* font-family: "Rubik Mono One", monospace; */
     font-family: "Yatra One", system-ui;
   }
