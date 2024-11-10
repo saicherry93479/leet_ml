@@ -86,7 +86,8 @@ export const sendMail = defineAction({
       return { status: false } as const;
     }
     try {
-      const emailCode = await sendEmail("");
+      const [user] = await db.select().from(users).where(eq(users.id, userId));
+      const emailCode = await sendEmail(user.email);
 
       if (emailCode === 0) {
         return { status: false } as const;

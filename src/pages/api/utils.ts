@@ -10,12 +10,12 @@ interface ISendEmail {
   name: string;
 }
 
-async function sendEmail(props: ISendEmail) {
+async function sendEmail(email) {
   try {
     const emailCode = Math.floor(100000 + Math.random() * 900000);
     const resp = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "saicherry93479@gmail.com",
+      to: email
       subject: "Hello World",
       html: `<p>ypur email code is <strong>${emailCode}</strong>!</p>`,
     });
