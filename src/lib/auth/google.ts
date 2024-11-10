@@ -7,9 +7,10 @@ import {
 } from "arctic";
 import { db } from "../db";
 import { sessions } from "../db/schema";
+import { env } from "../utils";
 
-const googleClientId = import.meta.env["GOOGLE_CLIENT_ID"];
-const googleClientSecret = import.meta.env["GOOGLE_CLIENT_SECRET"];
+const googleClientId = env("GOOGLE_CLIENT_ID");
+const googleClientSecret = env("GOOGLE_CLIENT_SECRET");
 
 function google(url?: URL) {
   url ??= new URL("http://localhost:4321");

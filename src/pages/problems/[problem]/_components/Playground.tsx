@@ -62,10 +62,7 @@ const playground = ({ user, problems, setSuccess, problemId }: props) => {
       localStorage.setItem(
         `code -${clickedProblems?.id}`,
         JSON.stringify(userCode)
-      ); // Set the code into local storage
-      // const res = await actions.runPython({
-      //   code: JSON.parse(JSON.stringify(userCode)),
-      // });
+      );
       const res = await axios.post("/api/pythonrun", {
         code: JSON.parse(JSON.stringify(userCode)),
       });

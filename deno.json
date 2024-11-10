@@ -1,0 +1,8 @@
+{
+  "importMap": {
+    "imports": {
+      "node:events": "https://deno.land/std/node/events.ts"
+    }
+  },
+  "nodeModulesDir": true
+}
