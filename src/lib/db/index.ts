@@ -1,3 +1,4 @@
+import { createClient } from "@libsql/client";
 import { env } from "../utils";
 import * as schema from "./schema";
 import { drizzle } from "drizzle-orm/libsql";
@@ -9,12 +10,12 @@ const embeddedReplicaUrl = env("TURSO_EMBEDDED_REPLICA_URL");
 console.log('url ',url)
 
 
-const clientImportUri = import.meta.env.DEV
-  ? "@libsql/client"
-  : `data:application/javascript,export * from "npm:@libsql/client/node"`;
-const createClient: typeof import("@libsql/client").createClient = (
-  await import(/* @vite-ignore */ clientImportUri)
-).createClient;
+// const clientImportUri = import.meta.env.DEV
+//   ? "@libsql/client"
+//   : `data:application/javascript,export * from "npm:@libsql/client/node"`;
+// const createClient: typeof import("@libsql/client").createClient = (
+//   await import(/* @vite-ignore */ clientImportUri)
+// ).createClient;
 
 let client = createClient({
   // url:'http://127.0.0.1:8080'

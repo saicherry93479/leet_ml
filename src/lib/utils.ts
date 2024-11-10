@@ -7,9 +7,17 @@ export function cn(...inputs: ClassValue[]) {
 
 
 export function env(key: string): string {
-  if (import.meta.env.DEV) {
-    return import.meta.env[key];
+  // First try Astro's import.meta.env
+  const astroEnvValue = import.meta.env[key];
+  if (astroEnvValue !== undefined) {
+    return astroEnvValue;
   }
-  // @ts-ignore Deno is available during runtime
-  return Deno.env.get(key) || "";
+
+  // Fallback to process.env if running in Node.js production
+  if (process.env[key] !== undefined) {
+    return process.env[key] as string;
+  }
+
+  // If neither exists, throw an error
+  throw new Error(`Environment variable ${key} is not defined`);
 }
