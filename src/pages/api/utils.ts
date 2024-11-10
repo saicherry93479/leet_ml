@@ -14,9 +14,9 @@ async function sendEmail(email) {
   try {
     const emailCode = Math.floor(100000 + Math.random() * 900000);
     const resp = await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "verification@leetml.site",
       to: email,
-      subject: "Hello World",
+      subject: "Email verification",
       html: `<p>ypur email code is <strong>${emailCode}</strong>!</p>`,
     });
 
