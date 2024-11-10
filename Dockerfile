@@ -49,5 +49,5 @@ ENV TURSO_EMBEDDED_REPLICA_URL=file:replica.db
 
 
 
-CMD [ "run", "--allow-net", "--allow-read", "--allow-env", "--allow-sys", "--allow-ffi", "server/entry.mjs" ]
+CMD [ "run", "--allow-net","--allow-run", "--allow-read", "--allow-env", "--allow-sys", "--allow-ffi", "server/entry.mjs" ]
 
