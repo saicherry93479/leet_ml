@@ -51,7 +51,7 @@
               />
             </svg>
           </div>
-          contnue with Google</a
+          continue with Google</a
         >
       </div>
 

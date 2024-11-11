@@ -58,12 +58,13 @@
         <tr
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
         >
-          <th
+          <a
+            href={`/problems/${problem.id}`}
             scope="row"
             class="px-6 py-4 hover:text-cyan-400 hover:cursor-pointer font-medium text-gray-900 whitespace-nowrap dark:text-white"
           >
             {problem.title}
-          </th>
+          </a>
           <td
             class="px-6 py-4 {difficultyColors.find(
               (d) => d.type === problem.difficulty

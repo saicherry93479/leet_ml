@@ -16,6 +16,6 @@ const allProblems = await db.query.problems.findMany({
 })
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Leet Ml.">
 	<ProblemScreen allProblems={allProblems} problemId={problem} client:only="react"></ProblemScreen>
 </Layout>
