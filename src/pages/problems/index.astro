@@ -3,9 +3,9 @@ import Layout from "../../layouts/Layout.astro";
 
 import ProblemList from "./_components/Problems.svelte";
 
-
+const { user } = Astro.locals;
 ---
 
 <Layout title="Leet Ml.">
-	<ProblemList client:idle></ProblemList>
+  <ProblemList {user} client:idle />
 </Layout>
