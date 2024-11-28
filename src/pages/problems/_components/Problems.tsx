@@ -1,77 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Search, Youtube, Crown, ChevronUp, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Search, Crown, ChevronUp, ChevronDown, Youtube } from "lucide-react";
+import { actions } from "astro:actions";
 
 const ProblemsList = ({ user }) => {
   const [problems, setProblems] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: null,
-    direction: 'asc'
+    direction: "asc",
   });
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deletingProblemId, setDeletingProblemId] = useState(null);
 
   const difficultyColors = {
-    Hard: 'text-red-500 bg-red-50',
-    Medium: 'text-orange-500 bg-orange-50',
-    Easy: 'text-green-500 bg-green-50'
+    Hard: "text-red-500 bg-red-50",
+    Medium: "text-orange-500 bg-orange-50",
+    Easy: "text-green-500 bg-green-50",
   };
 
-  // Fetch problems data
   useEffect(() => {
-    const fetchProblems = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const response = await axios.get('/api/problems');
-        setProblems(response.data || []);
-      } catch (err) {
-        console.error('Error fetching problems:', err);
-        setError('Failed to load problems. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    
 
     fetchProblems();
   }, []);
+  const fetchProblems = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await axios.get("/api/problems");
+      setProblems(response.data || []);
+    } catch (err) {
+      console.error("Error fetching problems:", err);
+      setError("Failed to load problems. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // Sort and filter problems
   const getSortedAndFilteredProblems = () => {
     let filteredProblems = [...problems];
 
-    // Apply search filter
     if (searchQuery) {
-      filteredProblems = filteredProblems.filter(problem =>
+      filteredProblems = filteredProblems.filter((problem) =>
         problem.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
-    // Apply difficulty filter
-    if (selectedDifficulty !== 'all') {
-      filteredProblems = filteredProblems.filter(problem =>
-        problem.difficulty === selectedDifficulty
+    if (selectedDifficulty !== "all") {
+      filteredProblems = filteredProblems.filter(
+        (problem) => problem.difficulty === selectedDifficulty
       );
     }
 
-    // Apply category filter
-    if (selectedCategory !== 'all') {
-      filteredProblems = filteredProblems.filter(problem =>
-        problem.category === selectedCategory
+    if (selectedCategory !== "all") {
+      filteredProblems = filteredProblems.filter(
+        (problem) => problem.category === selectedCategory
       );
     }
 
-    // Apply sorting
     if (sortConfig.key) {
       filteredProblems.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
+          return sortConfig.direction === "asc" ? -1 : 1;
         }
         if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
+          return sortConfig.direction === "asc" ? 1 : -1;
         }
         return 0;
       });
@@ -81,9 +78,9 @@ const ProblemsList = ({ user }) => {
   };
 
   const handleSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
     }
     setSortConfig({ key, direction });
   };
@@ -100,8 +97,21 @@ const ProblemsList = ({ user }) => {
     }
   };
 
-  // Get unique categories for filter dropdown
-  const categories = [...new Set(problems.map(problem => problem.category))];
+  const handleDelete = async (problemId) => {
+    try {
+      setDeletingProblemId(problemId);
+      await actions.setProblemHidden({
+        id: problemId,
+      });
+      await fetchProblems()
+    } catch (error) {
+      console.error("Error deleting problem:", error);
+    } finally {
+      setDeletingProblemId(null);
+    }
+  };
+
+  const categories = [...new Set(problems.map((problem) => problem.category))];
 
   if (isLoading) {
     return (
@@ -116,7 +126,7 @@ const ProblemsList = ({ user }) => {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error}</p>
-          <button 
+          <button
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
           >
@@ -131,11 +141,12 @@ const ProblemsList = ({ user }) => {
 
   return (
     <div className="p-4 md:p-8 max-w-[80rem] lg:min-w-[60rem] 2xl:min-w-[80rem] mx-auto">
-      {/* Search and Filters Section */}
       <div className="mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:justify-between">
-        {/* Search Bar */}
         <div className="relative w-full md:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+          <Search
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            size={20}
+          />
           <input
             type="text"
             value={searchQuery}
@@ -145,7 +156,6 @@ const ProblemsList = ({ user }) => {
           />
         </div>
 
-        {/* Filters */}
         <div className="flex flex-col md:flex-row gap-4">
           <select
             value={selectedDifficulty}
@@ -164,14 +174,15 @@ const ProblemsList = ({ user }) => {
             className="px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="all">All Categories</option>
-            {categories.map(category => (
-              <option key={category} value={category}>{category}</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
-      {/* Problems Table */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -179,27 +190,46 @@ const ProblemsList = ({ user }) => {
               <tr className="bg-gray-50">
                 <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
                   <button
-                    onClick={() => handleSort('title')}
+                    onClick={() => handleSort("title")}
                     className="flex items-center gap-2 hover:text-purple-600"
                   >
                     Problem Title
-                    {sortConfig.key === 'title' && (
-                      sortConfig.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-                    )}
+                    {sortConfig.key === "title" &&
+                      (sortConfig.direction === "asc" ? (
+                        <ChevronUp size={16} />
+                      ) : (
+                        <ChevronDown size={16} />
+                      ))}
                   </button>
                 </th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Difficulty</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Category</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">Resources</th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+                  Difficulty
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+                  Category
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+                  Resources
+                </th>
+                {user.admin === "Y" && (
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-600">
+                    Delete
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {filteredProblems.map((problem) => (
-                <tr key={problem.id} className="hover:bg-gray-50 transition-colors">
+                <tr
+                  key={problem.id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => handleProblemClick(problem.id, problem.isPremium)}
+                        onClick={() =>
+                          handleProblemClick(problem.id, problem.isPremium)
+                        }
                         className="text-blue-600 hover:text-blue-800 font-medium"
                       >
                         {problem.title}
@@ -210,7 +240,11 @@ const ProblemsList = ({ user }) => {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${difficultyColors[problem.difficulty]}`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        difficultyColors[problem.difficulty]
+                      }`}
+                    >
                       {problem.difficulty}
                     </span>
                   </td>
@@ -233,6 +267,27 @@ const ProblemsList = ({ user }) => {
                       )}
                     </div>
                   </td>
+                  {user.admin === "Y" && (
+                    <td className="px-6 py-4">
+                      <div
+                        onClick={() => !deletingProblemId && handleDelete(problem.id)}
+                        className={`text-white text-center w-[100px] p-2 cursor-pointer rounded-[4px] ${
+                          deletingProblemId === problem.id
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-red-500 hover:bg-red-600"
+                        }`}
+                      >
+                        {deletingProblemId === problem.id ? (
+                          <div className="flex items-center justify-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            <span>Deleting...</span>
+                          </div>
+                        ) : (
+                          "Delete"
+                        )}
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -240,10 +295,11 @@ const ProblemsList = ({ user }) => {
         </div>
       </div>
 
-      {/* Empty State */}
       {filteredProblems.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">No problems found. Try adjusting your filters.</p>
+          <p className="text-gray-500">
+            No problems found. Try adjusting your filters.
+          </p>
         </div>
       )}
     </div>

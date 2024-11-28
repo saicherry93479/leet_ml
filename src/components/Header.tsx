@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { LogOut, Menu, X } from 'lucide-react';
+import React, { useState } from "react";
+import { LogOut, Menu, X } from "lucide-react";
+import SessionTimer from "./SessionTimer";
 
 const Header = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,8 +19,8 @@ const Header = ({ user }) => {
           </a>
 
           {/* Mobile Menu Button */}
-          <button 
-            className="p-2 md:hidden" 
+          <button
+            className="p-2 md:hidden"
             onClick={toggleMenu}
             aria-label="Toggle menu"
           >
@@ -27,13 +28,15 @@ const Header = ({ user }) => {
           </button>
 
           {/* Navigation and User Section */}
-          <div className={`
+          <div
+            className={`
             absolute top-full left-0 right-0 bg-white md:relative
             md:flex md:flex-1 md:items-center md:justify-between 
             transition-all duration-300 ease-in-out
-            ${isMenuOpen ? 'block' : 'hidden md:flex'}
+            ${isMenuOpen ? "block" : "hidden md:flex"}
             shadow-md md:shadow-none
-          `}>
+          `}
+          >
             {/* Navigation Links */}
             <nav className="px-4 py-2 md:py-0">
               <ul className="space-y-2 md:space-y-0 md:flex md:items-center">
@@ -42,7 +45,7 @@ const Header = ({ user }) => {
                 {user?.admin === "Y" && (
                   <NavLink href="/newproblem">New Problem</NavLink>
                 )}
-                
+
                 {/* Premium Status/Button */}
                 <li className="md:ml-4">
                   {user?.premiumUser ? (
@@ -50,12 +53,15 @@ const Header = ({ user }) => {
                       Premium User
                     </div>
                   ) : user ? (
-                    <a href="/payment" className="block px-4 py-2 bg-purple-500 text-white text-sm rounded-lg hover:bg-purple-600 transition-colors">
+                    <a
+                      href="/payment"
+                      className="block px-4 py-2 bg-purple-500 text-white text-sm rounded-lg hover:bg-purple-600 transition-colors"
+                    >
                       Buy Premium
                     </a>
                   ) : null}
                 </li>
-                
+
                 <NavLink href="/profile">Profile</NavLink>
               </ul>
             </nav>
@@ -64,6 +70,7 @@ const Header = ({ user }) => {
             <div className="p-4 md:p-0 border-t md:border-none">
               {user ? (
                 <div className="flex items-center gap-4 justify-end">
+                  {/* <SessionTimer /> */}
                   <div className="h-10 w-10 rounded-lg overflow-hidden">
                     <img
                       className="h-full w-full object-cover"
@@ -71,8 +78,8 @@ const Header = ({ user }) => {
                       alt={user.name}
                     />
                   </div>
-                  <a 
-                    href="/logout" 
+                  <a
+                    href="/logout"
                     className="p-2 text-gray-600 hover:text-gray-800 transition-colors"
                     title="Logout"
                   >

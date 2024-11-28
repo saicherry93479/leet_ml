@@ -37,7 +37,7 @@ export const POST: APIRoute = async ({ cookies }) => {
         secure: import.meta.env.PROD,
         httpOnly: true,
         path: "/",
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        expires: new Date(Date.now() + 1000 * 60 * 15),
       });
   
       return new Response(JSON.stringify({ success: true }));

@@ -1,6 +1,12 @@
 // src/pages/api/problems/index.ts
 import { db } from "@/lib/db";
-import { examples, problems, problemTags, problemToTags, testCases } from "@/lib/db/schema";
+import {
+  examples,
+  problems,
+  problemTags,
+  problemToTags,
+  testCases,
+} from "@/lib/db/schema";
 import type { APIRoute } from "astro";
 
 
@@ -18,7 +24,8 @@ export const GET: APIRoute = async ({ url }) => {
       .select()
       .from(problems)
       .leftJoin(problemToTags, eq(problems.id, problemToTags.problemId))
-      .leftJoin(problemTags, eq(problemToTags.tagId, problemTags.id));
+      .leftJoin(problemTags, eq(problemToTags.tagId, problemTags.id))
+      .where(eq(problems.show, "Yes"));
 
     if (difficulty) {
       query = query.where(eq(problems.difficulty, difficulty));

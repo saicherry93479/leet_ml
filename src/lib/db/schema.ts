@@ -55,6 +55,7 @@ export const problems = sqliteTable("problems", {
   updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(
     () => new Date()
   ),
+  show: text("show").default("Yes"),
 });
 
 export const examples = sqliteTable("examples", {
@@ -63,7 +64,7 @@ export const examples = sqliteTable("examples", {
     .$defaultFn(() => crypto.randomUUID()),
   problemId: text("problem_id")
     .notNull()
-    .references(() => problems.id),
+    .references(() => problems.id, { onDelete: "cascade" }),
   inputText: text("input_text").notNull(),
   outputText: text("output_text").notNull(),
   explanation: text("explanation"),
@@ -75,7 +76,7 @@ export const problemSubmissions = sqliteTable("problemSubmission", {
     .$defaultFn(() => crypto.randomUUID()),
   problemId: text("problem_id")
     .notNull()
-    .references(() => problems.id),
+    .references(() => problems.id, { onDelete: "cascade" }),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
@@ -98,7 +99,7 @@ export const testCases = sqliteTable("test_cases", {
     .$defaultFn(() => crypto.randomUUID()),
   problemId: text("problem_id")
     .notNull()
-    .references(() => problems.id),
+    .references(() => problems.id, { onDelete: "cascade" }),
   input: text("input").notNull(),
   output: text("output").notNull(),
 });
@@ -107,7 +108,7 @@ export const testCases = sqliteTable("test_cases", {
 export const problemToTags = sqliteTable("problem_to_tags", {
   problemId: text("problem_id")
     .notNull()
-    .references(() => problems.id),
+    .references(() => problems.id, { onDelete: "cascade" }),
   tagId: text("tag_id")
     .notNull()
     .references(() => problemTags.id),

@@ -16,7 +16,7 @@ export const submission = defineAction({
     try {
       await db.insert(problemSubmissions).values({
         userId: locals.user.id,
-        problemId: data.id,
+      problemId: data.id,
       });
       return { success: true } as const;
     } catch (e) {
