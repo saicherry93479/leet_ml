@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Search, Youtube, Crown, ChevronUp, ChevronDown } from 'lucide-react';
 
 const ProblemsList = ({ user }) => {
@@ -10,11 +11,73 @@ const ProblemsList = ({ user }) => {
   });
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const difficultyColors = {
     Hard: 'text-red-500 bg-red-50',
     Medium: 'text-orange-500 bg-orange-50',
     Easy: 'text-green-500 bg-green-50'
+  };
+
+  // Fetch problems data
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await axios.get('/api/problems');
+        setProblems(response.data || []);
+      } catch (err) {
+        console.error('Error fetching problems:', err);
+        setError('Failed to load problems. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProblems();
+  }, []);
+
+  // Sort and filter problems
+  const getSortedAndFilteredProblems = () => {
+    let filteredProblems = [...problems];
+
+    // Apply search filter
+    if (searchQuery) {
+      filteredProblems = filteredProblems.filter(problem =>
+        problem.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Apply difficulty filter
+    if (selectedDifficulty !== 'all') {
+      filteredProblems = filteredProblems.filter(problem =>
+        problem.difficulty === selectedDifficulty
+      );
+    }
+
+    // Apply category filter
+    if (selectedCategory !== 'all') {
+      filteredProblems = filteredProblems.filter(problem =>
+        problem.category === selectedCategory
+      );
+    }
+
+    // Apply sorting
+    if (sortConfig.key) {
+      filteredProblems.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+
+    return filteredProblems;
   };
 
   const handleSort = (key) => {
@@ -37,8 +100,37 @@ const ProblemsList = ({ user }) => {
     }
   };
 
+  // Get unique categories for filter dropdown
+  const categories = [...new Set(problems.map(problem => problem.category))];
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-500 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const filteredProblems = getSortedAndFilteredProblems();
+
   return (
-    <div className="p-4 md:p-8 max-w-[80rem] mx-auto">
+    <div className="p-4 md:p-8 max-w-[80rem] lg:min-w-[60rem] 2xl:min-w-[80rem] mx-auto">
       {/* Search and Filters Section */}
       <div className="mb-6 space-y-4 md:space-y-0 md:flex md:items-center md:justify-between">
         {/* Search Bar */}
@@ -54,7 +146,7 @@ const ProblemsList = ({ user }) => {
         </div>
 
         {/* Filters */}
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
@@ -72,7 +164,9 @@ const ProblemsList = ({ user }) => {
             className="px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="all">All Categories</option>
-            {/* Add your categories here */}
+            {categories.map(category => (
+              <option key={category} value={category}>{category}</option>
+            ))}
           </select>
         </div>
       </div>
@@ -100,7 +194,7 @@ const ProblemsList = ({ user }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {problems.map((problem) => (
+              {filteredProblems.map((problem) => (
                 <tr key={problem.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
@@ -147,7 +241,7 @@ const ProblemsList = ({ user }) => {
       </div>
 
       {/* Empty State */}
-      {problems.length === 0 && (
+      {filteredProblems.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500">No problems found. Try adjusting your filters.</p>
         </div>

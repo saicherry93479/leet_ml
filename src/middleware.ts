@@ -50,44 +50,7 @@ export const auth = defineMiddleware(
       }
     }
 
-    // if (user) {
-    //   if (!user.hasOnboarded) {
-    //     if (url.pathname !== "/register" && url.pathname !== "/") {
-    //       return redirect("/register", 302);
-    //     }
-    //   }
-    // }
 
-    // if (user) {
-    //   if (user.hasOnboarded) {
-    //     if (url.pathname === "/onboarding") return redirect("/jobs", 302);
-    //     if (
-    //       user.profile?.resumeAnalysed &&
-    //       url.pathname === "/analyse_resume"
-    //     ) {
-    //       return redirect("/jobs", 302);
-    //     } else if (
-    //       !user.profile?.resumeAnalysed &&
-    //       url.pathname !== "/analyse_resume"
-    //     ) {
-    //       return redirect("/analyse_resume", 302);
-    //     }
-
-    //     if (
-    //       user.profile?.resumeAnalysed &&
-    //       !user.profile.linkedinUrl &&
-    //       url.pathname.startsWith("/jobs") &&
-    //       url.pathname !== "/jobs/connect_linkedin"
-    //     ) {
-    //       cookies.set("redirect", url.pathname);
-    //       return redirect("/jobs/connect_linkedin", 302);
-    //     }
-    //   } else if (!user.hasOnboarded) {
-    //     if (url.pathname !== "/onboarding" && url.pathname !== "/") {
-    //       return redirect("/onboarding", 302);
-    //     }
-    //   }
-    // }
 
     const res = await next();
     // locals.user = null;

@@ -1,9 +1,9 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import PaymentForm from './_components/PaymentForm.svelte'
+import PaymentForm from './_components/PaymentForm.tsx'
 
 ---
 
 <Layout title="Leet Ml.">
-	<PaymentForm  client:only></PaymentForm>
+	<PaymentForm  client:load></PaymentForm>
 </Layout>
